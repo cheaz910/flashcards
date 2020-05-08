@@ -1,0 +1,71 @@
+h1 {
+    margin: 40px auto;
+}
+
+.test {
+    transition: 1s;
+    background-color: blue;
+}
+
+.test_1 {
+    background-color: yellow;
+}
+
+.cardWrapper {
+    width: 250px;
+    height: 330px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.card {
+    width: 250px;
+    height: 330px;
+    margin: 0 auto;
+    border-radius: 4px;
+    transition: all 1s;
+    position: absolute;
+    left: 0;
+    perspective: 1000px;
+    opacity: 1;
+}
+
+.card_show {
+    transform: scale(1);
+}
+
+.card_throw {
+    left:700px;
+    transform: scale(0) rotateZ(180deg);
+}
+
+
+.card__buttons {
+    margin: 20px auto;
+}
+
+.card__buttons button {
+    margin: 0 10px;
+}
+
+.card__front, .card__back {
+    width: 100%;
+    height: 100%;
+    background-color: #FCE8E8;
+    border: 1px solid black;
+    position: absolute;
+    transition: .7s ease-out;
+    backface-visibility: hidden;
+}
+
+.card__back {
+    transform: rotateY(-180deg);
+}
+
+.card__front_flip {
+    transform: rotateY(-180deg)
+}
+
+.card__back_flip {
+    transform: rotateY(-360deg)
+}
