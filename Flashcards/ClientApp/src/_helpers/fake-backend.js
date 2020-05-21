@@ -3,19 +3,19 @@ export function configureFakeBackend() {
     let sets = [
         { userId: 1,
             sets: [
-                { id: 1, name: "eng words", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
+                { id: 1, name: "eng words", description: "no description :(", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
                                                      { id: 3, wordEn: "boat", wordRu: "лодка"}, { id: 4, wordEn: "word", wordRu: "слово"}
                                                      ]},
-                { id: 2, name: "set2", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
+                { id: 2, name: "set2", description: "no description :(", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
                         { id: 3, wordEn: "boat", wordRu: "лодка"}, { id: 4, wordEn: "word", wordRu: "слово"}
                     ]},
-                { id: 3, name: "set3", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
+                { id: 3, name: "set3", description: "no description :(", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
                         { id: 3, wordEn: "boat", wordRu: "лодка"}, { id: 4, wordEn: "word", wordRu: "слово"}
                     ]},
-                { id: 4, name: "set4", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
+                { id: 4, name: "set4", description: "no description :(", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
                         { id: 3, wordEn: "boat", wordRu: "лодка"}, { id: 4, wordEn: "word", wordRu: "слово"}
                     ]},
-                { id: 5, name: "set5", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
+                { id: 5, name: "set5", description: "no description :(", cards: [{ id: 1, wordEn: "dog", wordRu: "собака"}, { id: 2, wordEn: "cat", wordRu: "кошка"},
                         { id: 3, wordEn: "boat", wordRu: "лодка"}, { id: 4, wordEn: "word", wordRu: "слово"}
                     ]}
                     ]}];

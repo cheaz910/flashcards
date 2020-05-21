@@ -11,7 +11,7 @@ export class SetItem extends React.Component {
             <>
                 <Link to={`/checkCards/${set.id}`} className={styles.set}>
                     <span className={styles.set__title}>{set.name}</span>
-                    <span className={styles.set__description}>[DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION][DESCRIPTION]</span>
+                    <span className={styles.set__description}>{set.description}</span>
                 </Link>
                 <Link to={`/sets/${set.id}`} className={styles.set__footer}>
                     <span>Изменить</span>
