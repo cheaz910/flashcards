@@ -8,6 +8,7 @@ import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { CheckCardsPage } from "../CheckCardsPage";
 import './app.css';
+import {SetPage} from "../SetPage";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -32,18 +33,21 @@ export default class App extends React.Component {
         return (
             <Router history={history}>
                 {currentUser &&
-                <nav className="nav-header">
-                    <div className="nav-header__links">
-                        <Link to="/" className="links__link">Home</Link>
-                    </div>
-                    <div className="nav-header__profile">
-                        <a href="/#" onClick={this.logout} className="profile__link">Logout</a>
-                    </div>
-                </nav>
+                <header>
+                    <nav className="nav-header">
+                        <div className="nav-header__links">
+                            <Link to="/" className="links__link">Home</Link>
+                        </div>
+                        <div className="nav-header__profile">
+                            <a href="/#" onClick={this.logout} className="profile__link">Logout</a>
+                        </div>
+                    </nav>
+                </header>
                 }
                 <main>
                     <PrivateRoute exact path="/" component={HomePage} />
                     <PrivateRoute exact path="/checkCards/:setId" component={CheckCardsPage} />
+                    <PrivateRoute exact path="/sets/:setId?" component={SetPage} />
                     <Route path="/login" component={LoginPage} />
                 </main>
             </Router>
