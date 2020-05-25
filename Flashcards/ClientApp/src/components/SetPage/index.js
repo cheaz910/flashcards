@@ -6,28 +6,9 @@ import config from "../../config";
 import {authHeader, handleResponse, mergeClassNames} from "../../_helpers";
 import styles from './setPage.module.css';
 
-class NewRow extends React.Component {
-    render() {
-        return (
-            <tr>
-                <th>
-                    <input type="text"></input>
-                </th>
-                <th>
-                    <input type="text"></input>
-                </th>
-                <th>
-                    <button type="button" onClick={() => this.change(4)}>Изменить</button>
-                </th>
-            </tr>
-        );
-    }
-}
-
 export class SetPage extends React.Component {
     constructor(props) {
         super(props);
-        this.addRow = this.addRow.bind(this);
         this.state = {
             currentUser: authenticationService.currentUserValue,
             set: [],
