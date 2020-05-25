@@ -6,17 +6,45 @@ import config from "../../config";
 import {authHeader, handleResponse, mergeClassNames} from "../../_helpers";
 import styles from './setPage.module.css';
 
+class NewRow extends React.Component {
+    render() {
+        return (
+            <tr>
+                <th>
+                    <input type="text"></input>
+                </th>
+                <th>
+                    <input type="text"></input>
+                </th>
+                <th>
+                    <button type="button" onClick={() => this.change(4)}>Изменить</button>
+                </th>
+            </tr>
+        );
+    }
+}
 
 export class SetPage extends React.Component {
     constructor(props) {
         super(props);
-
+        this.addRow = this.addRow.bind(this);
         this.state = {
             currentUser: authenticationService.currentUserValue,
             set: [],
-            loaded: false,
-            isChanged: false
+            loaded: false
         };
+    }
+
+    getSet(set) {
+        let cards = [];
+        for (let i = 0; i < set.cards.length; i++) {
+            let item = set.cards[i];
+            item['number'] = i;
+            item['isChange'] = false;
+            cards.push(item);
+        }
+        set.cards = cards;
+        return set;
     }
 
     componentDidMount() {
@@ -24,44 +52,89 @@ export class SetPage extends React.Component {
                 userId: this.state.currentUser.id,
                 setId: this.props.match.params.setId
             })};
-        fetch(`${config.apiUrl}/api/set/1`, requestOptions).then(handleResponse).then(data => this.setState({ set: data.set, loaded: true }));
+        fetch(`${config.apiUrl}/api/set/1`, requestOptions).then(handleResponse).then(data => this.setState({ set: this.getSet(data.set), nRow: data.set.length, loaded: true }));
     }
 
-    addInput() {
-        let li1 = document.createElement('li');
-        li1.innerHTML = '<input type="text">';
-        document.getElementById("column1").appendChild(li1);
-        let li2 = document.createElement('li');
-        li2.innerHTML = '<input type="text">';
-        document.getElementById("column2").appendChild(li2);
+    createMutableRow(card) {
+        return (
+            <tr key={card.number}>
+                <th>
+                    <input type="text" defaultValue={card.wordEn}/>
+                </th>
+                <th>
+                    <input type="text" defaultValue={card.wordRu}/>
+                </th>
+                <th>
+                    <button type="button" onClick={() => this.save(card.number)}>Сохранить</button>
+                </th>
+            </tr>
+        );
+    }
+
+    createImmutableRow(card) {
+        return (
+            <tr key={card.number}>
+                <th>{card.wordEn}</th>
+                <th>{card.wordRu}</th>
+                <th>
+                    <button type="button" onClick={() => this.change(card.number)}>Изменить</button>
+                </th>
+            </tr>
+        );
+    }
+
+    save(number) {
+        let newState = this.state;
+        let row = document.querySelectorAll('tr')[number].children;
+        let wordEn = row[0].children[0];
+        let wordRu = row[1].children[0];
+        if (wordEn.value !== "" && wordRu.value !== "") {
+            newState.set.cards[number].isChange = false;
+            if (wordEn.value !== wordEn.defaultValue || wordRu.value !== wordRu.defaultValue) {
+                newState.set.cards[number].wordEn = wordEn.value;
+                newState.set.cards[number].wordRu = wordRu.value;
+                //отправка слова на сервер cards[number]
+            }
+            this.setState(newState);
+        }
+    }
+
+    change(number) {
+        let newState = this.state;
+        newState.set.cards[number].isChange = true;
+        this.setState(newState);
+    }
+
+    addRow() {
+        let card = {
+            id:null,
+            number: this.state.set.cards.length,
+            isChange: true,
+            wordEn:"",
+            wordRu:""
+        };
+        let newState = this.state;
+        newState.set.cards.push(card);
+        this.setState(newState);
     }
 
     render() {
-        console.log(this.state);
-        console.log(this.props);
         if (!this.state.loaded) {
             return <h1>loading...</h1>;
         }
         return (
             <Fragment>
-                <h1>{this.props.match.params.setId ? `Набор - ${this.props.match.params.setId}` : `Новый набор`}</h1>
-                <div>
-                    <ul className={styles.columns} id="column1">
-                        {this.state.set.cards.map(card =>
-                            <li>
-                                <input type="text" value={card.wordEn}/>
-                            </li>
-                        )}
-                    </ul>
-                    <ul className={styles.columns} id="column2">
-                        {this.state.set.cards.map(card =>
-                            <li>
-                                <input type="text" value={card.wordRu}/>
-                            </li>
-                        )}
-                    </ul>
-                </div>
-                <button type="button" onClick={() => this.addInput()}>+</button>
+                <h1>{
+                    this.props.match.params.setId ? `Набор - ${this.props.match.params.setId}` : `Новый набор`
+                }</h1>
+                <table id="table">
+                    {
+                        this.state.set.cards.map(card =>
+                            (card.isChange) ? this.createMutableRow(card) : this.createImmutableRow(card)
+                        )
+                    }
+                </table>
+                <button type="button" onClick={this.addRow}>+</button>
             </Fragment>
         );
     }
