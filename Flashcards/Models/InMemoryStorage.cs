@@ -29,9 +29,13 @@ namespace Flashcards.Models
         private static List<Card> Cards = new List<Card>()
         {
             new Card() {Id = Guid.NewGuid(), DeckId = Decks[0].Id, Text = "Lion", Translation = "Лев"},
+            new Card() {Id = Guid.NewGuid(), DeckId = Decks[0].Id, Text = "Monkey", Translation = "Обезьяна"},
             new Card() {Id = Guid.NewGuid(), DeckId = Decks[1].Id, Text = "Skyscraper", Translation = "Небоскрёб"},
+            new Card() {Id = Guid.NewGuid(), DeckId = Decks[1].Id, Text = "Square", Translation = "Площадь"},
             new Card() {Id = Guid.NewGuid(), DeckId = Decks[2].Id, Text = "Ruler", Translation = "Линейка"},
-            new Card() {Id = Guid.NewGuid(), DeckId = Decks[3].Id, Text = "Cake", Translation = "Торт"}
+            new Card() {Id = Guid.NewGuid(), DeckId = Decks[2].Id, Text = "Pencil", Translation = "Карандаш"},
+            new Card() {Id = Guid.NewGuid(), DeckId = Decks[3].Id, Text = "Cake", Translation = "Торт"},
+            new Card() {Id = Guid.NewGuid(), DeckId = Decks[3].Id, Text = "Milk", Translation = "Молоко"}
         };
 
         public bool ContainsUser(Guid userId)
@@ -64,14 +68,14 @@ namespace Flashcards.Models
             return Decks.Where(deck => deck.UserId == userId || deck.UserId == Guid.Empty).ToList();
         }
 
-        public async Task<List<Card>> GetDeckAsync(Guid userId, Guid deckId)
+        public async Task<Deck> GetDeckAsync(Guid userId, Guid deckId)
         {
-            return Cards.Where(card => card.DeckId == deckId).ToList();
+            return Decks.Where(deck => deck.Id == deckId).ToList()[0];
         }
 
-        public Task<List<Card>> GetCardsAsync(Guid userId, Guid deckId)
+        public async Task<List<Card>> GetCardsAsync(Guid userId, Guid deckId)
         {
-            throw new NotImplementedException();
+            return Cards.Where(card => card.DeckId == deckId).ToList();
         }
 
         public Task<Card> GetCardAsync(Guid userId, Guid deckId, Guid cardId)

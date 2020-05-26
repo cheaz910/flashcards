@@ -13,7 +13,7 @@ namespace Flashcards.Models
         Task<List<User>> GetUsersAsync();
         Task<User> GetUserAsync(Guid userId);
         Task<List<Deck>> GetDecksAsync(Guid userId);
-        Task<List<Card>> GetDeckAsync(Guid userId, Guid deckId);
+        Task<Deck> GetDeckAsync(Guid userId, Guid deckId);
         Task<List<Card>> GetCardsAsync(Guid userId, Guid deckId);
         Task<Card> GetCardAsync(Guid userId, Guid deckId, Guid cardId);
         Task AddUserAsync(User user);
