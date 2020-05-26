@@ -1,3 +1,4 @@
+using Flashcards.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,8 @@ namespace Flashcards
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSingleton<IDbContext, InMemoryStorage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
