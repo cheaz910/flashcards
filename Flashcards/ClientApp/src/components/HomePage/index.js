@@ -21,6 +21,7 @@ class HomePage extends React.Component {
 
     handleChange(event) {
         this.setState({currentToken: event.target.value});
+        localStorage.setItem('token', event.target.value);
         fetch(`api/users/${event.target.value}/decks`, {'headers':{'Authorization':'no'}})
             .then(data=>data.json())
             .then(data => this.setState({ sets: data }));
@@ -30,6 +31,7 @@ class HomePage extends React.Component {
         const requestOptions = { method: 'POST', headers: {...authHeader(), 'Content-Type': 'application/json'}, body: JSON.stringify({
                 userId: this.state.currentUser.id
             })};
+        localStorage.setItem('token', this.state.currentToken);
         fetch(`api/users/${this.state.currentToken}/decks`, {'headers':{'Authorization':'no'}})
             .then(data=>data.json())
             .then(data => this.setState({ sets: data }));
@@ -45,7 +47,7 @@ class HomePage extends React.Component {
                     <option value="81a130d2-502f-4cf1-a376-63edeb000e9f">user0</option>
                     <option value="0f8fad5b-d9cb-469f-a165-70867728950e">user1</option>
                 </select>
-                <Sets sets={sets}/>
+                <Sets sets={sets} />
             </>
         );
     }

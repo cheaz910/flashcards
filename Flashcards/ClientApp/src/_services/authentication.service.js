@@ -31,6 +31,10 @@ function login(username, password) {
         });
 }
 
+function changeToken(token) {
+    localStorage.setItem('token', JSON.stringify(token));
+}
+
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');

@@ -31,7 +31,7 @@ namespace Flashcards.Models
             new Card() {Id = Guid.NewGuid(), DeckId = Decks[0].Id, Text = "Lion", Translation = "Лев"},
             new Card() {Id = Guid.NewGuid(), DeckId = Decks[1].Id, Text = "Skyscraper", Translation = "Небоскрёб"},
             new Card() {Id = Guid.NewGuid(), DeckId = Decks[2].Id, Text = "Ruler", Translation = "Линейка"},
-            new Card() {Id = Guid.NewGuid(), DeckId = Decks[0].Id, Text = "Cake", Translation = "Торт"}
+            new Card() {Id = Guid.NewGuid(), DeckId = Decks[3].Id, Text = "Cake", Translation = "Торт"}
         };
 
         public bool ContainsUser(Guid userId)
