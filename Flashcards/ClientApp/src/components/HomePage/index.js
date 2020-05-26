@@ -12,9 +12,15 @@ class HomePage extends React.Component {
 
         this.state = {
             currentUser: authenticationService.currentUserValue,
-            users: null,
-            sets: []
+            sets: [],
+            currentUserId: 0
         };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({currentUserId: event.target.value});
     }
 
     componentDidMount() {
@@ -22,16 +28,19 @@ class HomePage extends React.Component {
                 userId: this.state.currentUser.id
             })};
         fetch(`${config.apiUrl}/api/sets`, requestOptions).then(handleResponse).then(data => this.setState({ sets: data.sets.sets }));
-        userService.getAll().then(users => this.setState({ users }));
     }
 
     render() {
-        console.log(this.state.sets);
-        const { currentUser, users, sets } = this.state;
+        const { sets } = this.state;
         return (
-            <Fragment>
-                <Sets sets={sets} />
-            </Fragment>
+            <>
+                <span>currentUser - {this.state.currentUserId}</span>
+                <select value={this.state.value} onChange={this.handleChange}>
+                    <option value="0">user0</option>
+                    <option value="1">user1</option>
+                </select>
+                <Sets sets={sets}/>
+            </>
         );
     }
 }
