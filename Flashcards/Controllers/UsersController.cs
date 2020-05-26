@@ -83,12 +83,12 @@ namespace Flashcards.Controllers
         
         // GET api/users/5/decks/5
         [HttpGet("{userId}/decks/{deckId}")]
-        public async Task<ActionResult<Deck>> GetDeck(Guid userId, Guid deckId)
+        public async Task<ActionResult<IEnumerable<Card>>> GetDeck(Guid userId, Guid deckId)
         {
             if (!db.ContainsDeck(userId, deckId))
                 return NotFound();
-            var deck = await db.GetDeckAsync(userId, deckId);
-            return new ObjectResult(deck);
+            var cards = await db.GetDeckAsync(userId, deckId);
+            return new ObjectResult(cards);
         }
         
         // POST api/users/5/decks

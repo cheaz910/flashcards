@@ -64,9 +64,9 @@ namespace Flashcards.Models
             return Decks.Where(deck => deck.UserId == userId || deck.UserId == Guid.Empty).ToList();
         }
 
-        public async Task<Deck> GetDeckAsync(Guid userId, Guid deckId)
+        public async Task<List<Card>> GetDeckAsync(Guid userId, Guid deckId)
         {
-            return Decks.Where(deck => deck.Id == deckId).ToList()[0];
+            return Cards.Where(card => card.DeckId == deckId).ToList();
         }
 
         public Task<List<Card>> GetCardsAsync(Guid userId, Guid deckId)
