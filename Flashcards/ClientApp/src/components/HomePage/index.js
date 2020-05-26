@@ -13,31 +13,37 @@ class HomePage extends React.Component {
         this.state = {
             currentUser: authenticationService.currentUserValue,
             sets: [],
-            currentUserId: 0
+            currentToken: '81a130d2-502f-4cf1-a376-63edeb000e9f'
         };
 
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {
-        this.setState({currentUserId: event.target.value});
+        this.setState({currentToken: event.target.value});
+        fetch(`api/users/${event.target.value}/decks`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json())
+            .then(data => this.setState({ sets: data }));
     }
 
     componentDidMount() {
         const requestOptions = { method: 'POST', headers: {...authHeader(), 'Content-Type': 'application/json'}, body: JSON.stringify({
                 userId: this.state.currentUser.id
             })};
-        fetch(`${config.apiUrl}/api/sets`, requestOptions).then(handleResponse).then(data => this.setState({ sets: data.sets.sets }));
+        fetch(`api/users/${this.state.currentToken}/decks`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json())
+            .then(data => this.setState({ sets: data }));
+        //fetch(`${config.apiUrl}/api/sets`, requestOptions).then(handleResponse).then(data => this.setState({ sets: data.sets.sets }));
     }
 
     render() {
         const { sets } = this.state;
         return (
             <>
-                <span>currentUser - {this.state.currentUserId}</span>
+                <span>currentToken - {this.state.currentToken}</span>
                 <select value={this.state.value} onChange={this.handleChange}>
-                    <option value="0">user0</option>
-                    <option value="1">user1</option>
+                    <option value="81a130d2-502f-4cf1-a376-63edeb000e9f">user0</option>
+                    <option value="0f8fad5b-d9cb-469f-a165-70867728950e">user1</option>
                 </select>
                 <Sets sets={sets}/>
             </>

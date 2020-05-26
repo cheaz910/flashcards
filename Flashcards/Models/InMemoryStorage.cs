@@ -41,7 +41,7 @@ namespace Flashcards.Models
 
         public bool ContainsDeck(Guid userId, Guid deckId)
         {
-            return Decks.Exists(deck => deck.Id == deckId && deck.UserId == userId);
+            return Decks.Exists(deck => deck.Id == deckId && (deck.UserId == userId || deck.UserId == Guid.Empty));
         }
 
         public bool ContainsCard(Guid userId, Guid deckId, Guid cardId)

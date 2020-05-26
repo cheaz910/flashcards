@@ -24,6 +24,7 @@ export class CheckCardsPage extends React.Component {
     }
 
     componentDidMount() {
+        console.log('helloworld', this.props);
         const requestOptions = { method: 'POST', headers: {...authHeader(), 'Content-Type': 'application/json'}, body: JSON.stringify({
                 userId: this.state.currentUser.id,
                 setId: this.props.match.params.setId
