@@ -14,7 +14,9 @@ export class CheckCardsPage extends React.Component {
             currentUser: authenticationService.currentUserValue,
             currentToken: localStorage.getItem('token'),
             set: [],
-            nextCard: 0,
+            setProperties: {},
+            firstNextCard: 0,
+            secondNextCard: 1,
             flipCard: false,
             knewCard: false,
             goodTries: 0,
@@ -25,44 +27,53 @@ export class CheckCardsPage extends React.Component {
     }
 
     componentDidMount() {
-        console.log('helloworld', this.props, this.state.currentToken);
-        const requestOptions = { method: 'POST', headers: {...authHeader(), 'Content-Type': 'application/json'}, body: JSON.stringify({
-                userId: this.state.currentUser.id,
-                setId: this.props.match.params.setId
-            })};
-        fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}`, {'headers':{'Authorization':'no'}})
-            .then(data=>data.json())
-            .then(data => this.setState({ set: data, loaded: true }))
-        //fetch(`${config.apiUrl}/api/set/1`, requestOptions).then(handleResponse).then(data => this.setState({ set: data.set, loaded: true }));
+        let fetchDeck = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}/cards`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json());
+        let fetch2 = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json());
+        Promise.all([fetchDeck, fetch2]).then(values => {
+            this.setState({
+                set: values[0],
+                loaded: true,
+                setProperties: values[1]
+            });
+        });
     }
 
     doKnowButtons() {
         return (
-            <>
-                <button onClick={() =>this.setState({flipCard: true, knewCard: true})}>KNOW</button>
-                <button onClick={() =>this.setState({flipCard: true})}>DON'T KNOW</button>
-            </>
+            <div className={styles.buttons}>
+                <button className={styles.agreeButton} onClick={() =>this.setState({flipCard: true, knewCard: true})}>Знаю</button>
+                <button className={styles.declineButton} onClick={() =>this.setState({flipCard: true})}>Не знаю</button>
+            </div>
         );
     }
 
     approveButtons() {
         return (
-            <>
-                <button onClick={() => this.nextCard(true)}>YES</button>
-                <button onClick={() => this.nextCard(false)}>NO</button>
-                <div>Угадали?</div>
-            </>
+            <div className={styles.buttons}>
+                <button className={styles.agreeButton} onClick={() => this.nextCard(true)}>Да</button>
+                <button className={styles.declineButton} onClick={() => this.nextCard(false)}>Нет :(</button>
+            </div>
         );
     }
 
     nextButtons() {
-        return <button onClick={() => this.nextCard(false)}>NEXT</button>;
+        return <button className={styles.neutralButton} onClick={() => this.nextCard(false)}>Далее</button>;
     }
 
     nextCard(isGuessed) {
+        let newFirstNextCard = this.state.firstNextCard;
+        let newSecondNextCard = this.state.secondNextCard;
+        if (this.state.isFirstCard) {
+            newSecondNextCard = (this.state.secondNextCard + 2) % this.state.set.length;
+        } else {
+            newFirstNextCard = (this.state.firstNextCard + 2) % this.state.set.length;
+        }
         this.setState({
             goodTries: this.state.goodTries + (isGuessed ? 1 : 0),
-            nextCard: (this.state.nextCard + 1) % this.state.set.length,
+            firstNextCard: newFirstNextCard,
+            secondNextCard: newSecondNextCard,
             flipCard: false,
             knewCard: false,
             newCard: !this.state.newCard,
@@ -77,39 +88,42 @@ export class CheckCardsPage extends React.Component {
             return <h1>loading...</h1>;
         }
         return (
-            <Fragment>
-                <h1>Набор - {this.props.match.params.setId}</h1>
-                <h1>Количество верно угаданных - {this.state.goodTries}</h1>
+            <div className={styles.checkCards}>
+                <span className={styles.checkCards__title}>Набор - {this.state.setProperties.title}</span>
+                <span className={styles.checkCards__goodCount}>Количество верно угаданных - {this.state.goodTries}</span>
                 <div className={styles.cardWrapper}>
-                    <div className={mergeClassNames(styles.card, this.state.isFirstCard ? styles.card_show : styles.card_hidden, this.state.newCard ? styles.card_throw : '')}>
+                    <div className={mergeClassNames(styles.card, this.state.isFirstCard ? styles.card_show : '', this.state.newCard ? styles.card_throw : '')}>
                         <div className={mergeClassNames(styles.card__front, this.state.flipCard ? styles.card__front_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.nextCard].text}
+                                {this.state.set[this.state.firstNextCard].text}
                             </div>
                         </div>
                         <div className={mergeClassNames(styles.card__back, this.state.flipCard ? styles.card__back_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.nextCard].translation}
+                                {this.state.set[this.state.firstNextCard].translation}
                             </div>
                         </div>
                     </div>
-                    <div className={mergeClassNames(styles.card, !this.state.isFirstCard ? styles.card_show : styles.card_hidden, !this.state.newCard ? styles.card_throw : '')}>
+                    <div className={mergeClassNames(styles.card, !this.state.isFirstCard ? styles.card_show : '', !this.state.newCard ? styles.card_throw : '')}>
                         <div className={mergeClassNames(styles.card__front, this.state.flipCard ? styles.card__front_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.nextCard].text}
+                                {this.state.set[this.state.secondNextCard].text}
                             </div>
                         </div>
                         <div className={mergeClassNames(styles.card__back, this.state.flipCard ? styles.card__back_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.nextCard].translation}
+                                {this.state.set[this.state.secondNextCard].translation}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className={styles.card__buttons}>
+                <div className={styles.card__result}>
+                    <span className={mergeClassNames(styles.result__title, this.state.flipCard && this.state.knewCard ? '' : styles.result__title_hidden)}>
+                        Верно?
+                    </span>
                     {buttons}
                 </div>
-            </Fragment>
+            </div>
         );
     }
 }

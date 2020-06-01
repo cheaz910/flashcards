@@ -1,31 +1,17 @@
-h1 {
-    margin: 40px auto;
-}
-
-.test {
-    transition: 1s;
-    background-color: blue;
-}
-
-.test_1 {
-    background-color: yellow;
-}
-
 .cardWrapper {
-    width: 250px;
-    height: 330px;
-    position: relative;
-    margin: 0 auto;
+    width: 200px;
+    height: 270px;
+    margin: 30px auto;
 }
 
 .card {
-    width: 250px;
-    height: 330px;
+    width: 200px;
+    height: 270px;
     margin: 0 auto;
     border-radius: 4px;
     transition: all 1s;
     position: absolute;
-    left: 0;
+    right: calc(50% - 100px);
     perspective: 1000px;
     opacity: 1;
 }
@@ -35,27 +21,34 @@ h1 {
 }
 
 .card_throw {
-    left:700px;
+    right: 0;
     transform: scale(0) rotateZ(180deg);
 }
 
 
-.card__buttons {
+.card__result {
     margin: 20px auto;
-}
-
-.card__buttons button {
-    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .card__front, .card__back {
-    width: 100%;
-    height: 100%;
-    background-color: #FCE8E8;
-    border: 1px solid black;
     position: absolute;
     transition: .7s ease-out;
     backface-visibility: hidden;
+    background-color: white;
+    border: 1px solid #396CF0;
+    width: 200px;
+    height: 270px;
+    border-radius: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card__word {
+    font-size: 27px;
 }
 
 .card__back {
@@ -68,4 +61,64 @@ h1 {
 
 .card__back_flip {
     transform: rotateY(-360deg)
+}
+
+.checkCards {
+    width: 100%;
+    background-color: #f2f8ff;
+    border-radius: 7px;
+    padding: 10px;
+    position: relative;
+    min-width: 460px;
+    min-height: 550px;
+    font-family: 'Alegreya Sans SC', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkCards__title {
+    font-size: 35px;
+    margin: 10px auto;
+}
+
+.checkCards__goodCount {
+    font-size: 30px;
+    margin: 10px auto;
+}
+
+.result__title {
+    display: inline-block;
+    margin: 10px auto;
+    font-size: 22px;
+}
+
+.result__title_hidden {
+    visibility: hidden;
+}
+
+.agreeButton,
+.declineButton,
+.neutralButton {
+    border-radius: 2px;
+    font-size: 17px;
+    width: 90px;
+    height: 30px;
+    font-family: 'Alegreya Sans SC', sans-serif;
+    color: white;
+    margin: 0 10px;
+}
+
+.agreeButton {
+    background-color: #4CAF50;
+    border: 1px solid #19721F;
+}
+
+.declineButton {
+    background-color: #f44336;
+    border: 1px solid #9F1C12;
+}
+
+.neutralButton {
+    background-color: #008CBA;
+    border: 1px solid #005B79;
 }
