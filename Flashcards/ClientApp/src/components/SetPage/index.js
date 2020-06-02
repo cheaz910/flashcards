@@ -45,7 +45,7 @@ export class SetPage extends React.Component {
                 <table>
                     <tbody>
                     {
-                        this.state.set.map(card => <TableRow card={card}/>)
+                        this.state.set.map(card => <TableRow card={card} setId={this.props.match.params.setId} currentToken={this.state.currentToken}/>)
                     }
                     </tbody>
                 </table>
