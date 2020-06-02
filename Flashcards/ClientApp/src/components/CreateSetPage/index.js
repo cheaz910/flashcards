@@ -1,5 +1,7 @@
 import React from 'react';
 import {Fragment} from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 import { userService, authenticationService } from '../../_services';
 import config from "../../config";
@@ -23,15 +25,15 @@ export default class CreateSetPage extends React.Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault();
         let body = JSON.stringify({
             'Title': this.state.title,
             'Description': this.state.description
         });
         console.log('BODY::::::', body);
-        if (this.state.title.length === 0 || this.state.description.length === 0)
+        if (this.state.title.length === 0 || this.state.description.length === 0) {
+            event.preventDefault();
             return;
-        console.log('hello gays');
+        }
         fetch(`api/users/${this.state.currentToken}/decks`, {
             method: 'POST',
             headers: {
@@ -40,6 +42,7 @@ export default class CreateSetPage extends React.Component {
             },
             body: body
         }).then(data => console.log(data));
+        event.preventDefault();
         this.props.history.push('/');
     }
 
@@ -55,17 +58,44 @@ export default class CreateSetPage extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Название набора:
-                    <input type="text" name="title" onChange={this.handleInputChange} />
-                </label>
-                <label>
-                    Описание набора:
-                    <input type="text" name="description" onChange={this.handleInputChange} />
-                </label>
-                <input type="submit" value="Отправить" />
-            </form>
+            <Formik
+                initialValues={{
+                    title: '',
+                    description: ''
+                }}
+                validationSchema={Yup.object().shape({
+                    title: Yup.string().required('Title is required'),
+                    description: Yup.string().required('Description is required')
+                })}
+                onSubmit={({ title, description }, { setStatus, setSubmitting }) => {
+                    setStatus();
+                    let body = JSON.stringify({
+                        'Title': this.state.title,
+                        'Description': this.state.description
+                    });
+                    fetch(`api/users/${this.state.currentToken}/decks`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: body
+                    }).then(data => {console.log(data);this.props.history.push('/');});
+                }}
+                render={({ errors, status, touched, isSubmitting }) => (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Название набора:
+                            <input type="text" name="title" onChange={this.handleInputChange} />
+                        </label>
+                        <label>
+                            Описание набора:
+                            <input type="text" name="description" onChange={this.handleInputChange} />
+                        </label>
+                        <input type="submit" value="Отправить" />
+                    </form>
+                )}
+            />
         );
     }
 }
