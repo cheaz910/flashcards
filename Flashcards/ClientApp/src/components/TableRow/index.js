@@ -50,6 +50,7 @@ export class TableRow extends React.Component {
     }
 
     render() {
+        console.log(this.props, this.state);
         if (this.state.isMutable === null) {
             return null;
         }
@@ -58,22 +59,20 @@ export class TableRow extends React.Component {
 
     delete() {
         this.setState({ isMutable: null });
-        let body = JSON.stringify({
-            'Text': this.state.wordEn,
-            'Translation': this.state.wordRu
-        });
-        fetch(`api/users/${this.state.currentToken}/decks/${this.props.setId}/cards`, {
-            method: 'POST',
+        let cardIdToDelete = this.state.cardId;
+        if (cardIdToDelete === 0) {
+            cardIdToDelete = this.props.card.id;
+        }
+        fetch(`api/users/${cardIdToDelete}`, {
+            method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            },
-            body: body
+            }
         }).then(data => {console.log(data)});
     }
 
     save() {
-        console.log(this.props);
         if (this.state.wordEn !== "" && this.state.wordRu !== "") {
             this.setState({ isMutable: !this.state.isMutable });
             if (this.state.wordEn !== this.props.card.wordEn
@@ -90,7 +89,7 @@ export class TableRow extends React.Component {
                         'Content-Type': 'application/json'
                     },
                     body: body
-                }).then(data => {console.log(data)});
+                }).then(data => data.json()).then(data => this.setState({cardId: data.id}));
             }
         }
     }  
