@@ -110,12 +110,12 @@ export class CheckCardsPage extends React.Component {
                     <div className={mergeClassNames(styles.card, !this.state.isFirstCard ? styles.card_show : '', !this.state.newCard ? styles.card_throw : '')}>
                         <div className={mergeClassNames(styles.card__front, this.state.flipCard ? styles.card__front_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.secondNextCard].text}
+                                {this.state.set[this.state.secondNextCard > this.state.set.length ? this.state.secondNextCard : this.state.set.length - 1].text}
                             </div>
                         </div>
                         <div className={mergeClassNames(styles.card__back, this.state.flipCard ? styles.card__back_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.secondNextCard].translation}
+                                {this.state.set[this.state.secondNextCard > this.state.set.length ? this.state.secondNextCard : this.state.set.length - 1].translation}
                             </div>
                         </div>
                     </div>
