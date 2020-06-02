@@ -6,7 +6,8 @@ import { authenticationService } from '../../_services';
 import { PrivateRoute } from '../../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
-import { CheckCardsPage } from "../CheckCardsPage";
+import { CheckCardsPage } from "../CheckCardsPage"
+import CreateSetPage from "../CreateSetPage";
 import './app.css';
 import {SetPage} from "../SetPage";
 
@@ -47,7 +48,8 @@ export default class App extends React.Component {
                 <main>
                     <PrivateRoute exact path="/" component={HomePage} />
                     <PrivateRoute exact path="/checkCards/:setId" component={CheckCardsPage} />
-                    <PrivateRoute exact path="/sets/:setId?" component={SetPage} />
+                    <PrivateRoute exact path="/sets/:setId" component={SetPage} />
+                    <PrivateRoute exact path="/sets" component={CreateSetPage} />
                     <Route path="/login" component={LoginPage} />
                 </main>
             </Router>

@@ -29,9 +29,10 @@ namespace Flashcards.Data
             return _deckCollection.Find(deck => deck.Id == deckId).FirstOrDefaultAsync();
         }
 
-        public Task AddDeckAsync(Guid userId, Deck deck)
+        public async Task<Deck> AddDeckAsync(Guid userId, Deck deck)
         {
-            throw new NotImplementedException();
+            await _deckCollection.InsertOneAsync(deck);
+            return deck;
         }
 
         public Task UpdateDeckAsync(Guid userId, Guid deckId, Deck deck)
