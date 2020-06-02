@@ -30,7 +30,7 @@ export class SetPage extends React.Component {
             });
         });
     }
-    
+
     render() {
         if (!this.state.loaded) {
             return <h1>loading...</h1>;
@@ -45,12 +45,12 @@ export class SetPage extends React.Component {
                 <table>
                     <tbody>
                     {
-                        this.state.set.map(card => <TableRow card={card}/>)
+                        this.state.set.map(card => <TableRow card={card} setId={this.props.match.params.setId} />)
                     }
                     </tbody>
                 </table>
                 <button type="button" onClick={() => this.addRow()}>+</button>
-            </Fragment>  
+            </Fragment>
         );
     }
 

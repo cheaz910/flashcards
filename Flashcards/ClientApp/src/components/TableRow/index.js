@@ -7,7 +7,9 @@ export class TableRow extends React.Component {
         this.state = {
             wordEn: props.card.text,
             wordRu: props.card.translation,
-            isMutable: props.card.isMutable
+            isMutable: props.card.isMutable,
+            currentToken: localStorage.getItem('token'),
+            cardId: 0
         };
     }
 
@@ -41,7 +43,7 @@ export class TableRow extends React.Component {
                 <th>{this.state.wordEn}</th>
                 <th>{this.state.wordRu}</th>
                 <th>
-                    <button type="button" onClick={() => this.setState({ isMutable: null })}>Удалить</button>
+                    <button type="button" onClick={() => this.delete()}>Удалить</button>
                 </th>
             </tr>
         );
@@ -54,12 +56,41 @@ export class TableRow extends React.Component {
         return (this.state.isMutable) ? this.getMutableRow() : this.getImmutableRow();
     }
 
+    delete() {
+        this.setState({ isMutable: null });
+        let body = JSON.stringify({
+            'Text': this.state.wordEn,
+            'Translation': this.state.wordRu
+        });
+        fetch(`api/users/${this.state.currentToken}/decks/${this.props.setId}/cards`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: body
+        }).then(data => {console.log(data)});
+    }
+
     save() {
+        console.log(this.props);
         if (this.state.wordEn !== "" && this.state.wordRu !== "") {
             this.setState({ isMutable: !this.state.isMutable });
             if (this.state.wordEn !== this.props.card.wordEn
                 || this.state.wordRu !== this.props.card.wordRu) {
                 //отправка слова на сервер card
+                let body = JSON.stringify({
+                    'Text': this.state.wordEn,
+                    'Translation': this.state.wordRu
+                });
+                fetch(`api/users/${this.state.currentToken}/decks/${this.props.setId}/cards`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: body
+                }).then(data => {console.log(data)});
             }
         }
     }  
