@@ -59,7 +59,7 @@ export class TableRow extends React.Component {
             this.setState({ isMutable: !this.state.isMutable });
             if (this.state.wordEn !== this.props.card.wordEn
                 || this.state.wordRu !== this.props.card.wordRu) {
-                //отправка слова на сервер card
+                
             }
         }
     }  
