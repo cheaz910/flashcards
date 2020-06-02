@@ -62,5 +62,5 @@ export class TableRow extends React.Component {
                 //отправка слова на сервер card
             }
         }
-    }
+    }  
 }
