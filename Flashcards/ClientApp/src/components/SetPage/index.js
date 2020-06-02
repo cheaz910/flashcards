@@ -1,9 +1,6 @@
 import React from 'react';
 import {Fragment} from 'react';
-
 import { userService, authenticationService } from '../../_services';
-import config from "../../config";
-import {authHeader, handleResponse} from "../../_helpers";
 import {TableRow} from '../TableRow';
 import styles from './setPage.module.css';
 
@@ -13,19 +10,27 @@ export class SetPage extends React.Component {
         super(props);
         this.state = {
             currentUser: authenticationService.currentUserValue,
+            currentToken: localStorage.getItem('token'),
             set: [],
+            setProperties: {},
             loaded: false
         };
     }
 
     componentDidMount() {
-        const requestOptions = { method: 'POST', headers: {...authHeader(), 'Content-Type': 'application/json'}, body: JSON.stringify({
-                userId: this.state.currentUser.id,
-                setId: this.props.match.params.setId
-            })};
-        fetch(`${config.apiUrl}/api/set/1`, requestOptions).then(handleResponse).then(data => this.setState({ set: this.getSet(data.set), nRow: data.set.length, loaded: true }));
+        let fetchDeck = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}/cards`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json());
+        let fetch2 = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json());
+        Promise.all([fetchDeck, fetch2]).then(values => {
+            this.setState({
+                set: this.getSet(values[0]),
+                loaded: true,
+                setProperties: values[1]
+            });
+        });
     }
-
+    
     render() {
         if (!this.state.loaded) {
             return <h1>loading...</h1>;
@@ -34,16 +39,18 @@ export class SetPage extends React.Component {
             <Fragment>
                 <h1>
                     {
-                        this.props.match.params.setId ? `Набор - ${this.props.match.params.setId}` : `Новый набор`
+                        this.state.setProperties.title ? `Набор - ${this.state.setProperties.title}` : 'Новый набор'
                     }
                 </h1>
                 <table>
+                    <tbody>
                     {
-                        this.state.set.cards.map(card => <TableRow card={card}/>)
+                        this.state.set.map(card => <TableRow card={card}/>)
                     }
+                    </tbody>
                 </table>
                 <button type="button" onClick={() => this.addRow()}>+</button>
-            </Fragment>
+            </Fragment>  
         );
     }
 
@@ -51,22 +58,21 @@ export class SetPage extends React.Component {
         let card = {
             id:null,
             isMutable: true,
-            wordEn:"",
-            wordRu:""
+            text:"",
+            translation:""
         };
         let newState = this.state;
-        newState.set.cards.push(card);
+        newState.set.push(card);
         this.setState(newState);
     }
 
-    getSet(set) {
+    getSet(set=null) {
         let cards = [];
-        for (let i = 0; i < set.cards.length; i++) {
-            let item = set.cards[i];
+        for (let i = 0; i < set.length; i++) {
+            let item = set[i];
             item['isMutable'] = false;
             cards.push(item);
         }
-        set.cards = cards;
-        return set;
+        return cards;
     }
 }
