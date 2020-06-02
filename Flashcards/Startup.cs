@@ -1,3 +1,4 @@
+using System;
 using Flashcards.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Flashcards.Data;
+using MongoDB.Driver;
 
 namespace Flashcards
 {
@@ -23,6 +26,13 @@ namespace Flashcards
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton(sp =>
+            {
+                var user = Environment.GetEnvironmentVariable("MONGODB_USER");
+                var password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
+                var client = new MongoClient($"mongodb+srv://{user}:{password}@webappcluster-zymsl.mongodb.net/test?retryWrites=true&w=majority");
+                return client.GetDatabase("FlashCardsDB");
+            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -30,7 +40,9 @@ namespace Flashcards
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddSingleton<IDbContext, InMemoryStorage>();
+            services.AddSingleton<ICardStorage, MongoCardStorage>();
+            services.AddSingleton<IUserStorage, MongoUserStorage>();
+            services.AddSingleton<IDeckStorage, MongoDeckStorage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
