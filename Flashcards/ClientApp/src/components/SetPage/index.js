@@ -50,7 +50,7 @@ export class SetPage extends React.Component {
                     </tbody>
                 </table>
                 <button type="button" onClick={() => this.addRow()}>+</button>
-            </Fragment>
+            </Fragment>  
         );
     }
 
