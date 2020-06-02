@@ -23,11 +23,15 @@ export default class CreateSetPage extends React.Component {
     }
 
     handleSubmit(event) {
+        event.preventDefault();
         let body = JSON.stringify({
             'Title': this.state.title,
             'Description': this.state.description
         });
         console.log('BODY::::::', body);
+        if (this.state.title.length === 0 || this.state.description.length === 0)
+            return;
+        console.log('hello gays');
         fetch(`api/users/${this.state.currentToken}/decks`, {
             method: 'POST',
             headers: {
@@ -36,7 +40,7 @@ export default class CreateSetPage extends React.Component {
             },
             body: body
         }).then(data => console.log(data));
-        event.preventDefault();
+        this.props.history.push('/');
     }
 
     handleInputChange(event) {
