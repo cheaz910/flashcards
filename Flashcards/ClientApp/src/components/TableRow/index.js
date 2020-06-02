@@ -1,14 +1,12 @@
 import React from "react";
-import {authHeader, handleResponse} from "../../_helpers";
-import config from "../../config";
 
 
 export class TableRow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            wordEn: props.card.wordEn,
-            wordRu: props.card.wordRu,
+            wordEn: props.card.text,
+            wordRu: props.card.translation,
             isMutable: props.card.isMutable
         };
     }
