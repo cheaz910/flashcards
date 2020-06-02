@@ -167,8 +167,8 @@ namespace Flashcards.Controllers
             return Ok(card);
         }
         
-        // DELETE api/users/5/decks/5/cards/5
-        [HttpDelete("{cardId}")]
+        
+        [HttpDelete("/cards/{cardId}")]
         public async Task<ActionResult> DeleteCard(Guid userId, Guid deckId, Guid cardId)
         {
             await _cardCollection.DeleteCardAsync(userId, cardId);
