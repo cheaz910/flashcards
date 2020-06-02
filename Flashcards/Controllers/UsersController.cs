@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Flashcards.Models;
 using Microsoft.AspNetCore.Mvc;
+using Flashcards.Data;
+using MongoDB.Driver;
 
 namespace Flashcards.Controllers
 {
@@ -11,26 +13,29 @@ namespace Flashcards.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        IDbContext db;
-        public UsersController(IDbContext context)
+        private readonly ICardStorage _cardCollection;
+        private readonly IDeckStorage _deckCollection;
+        private readonly IUserStorage _userCollection;
+        
+        public UsersController(ICardStorage cards, IDeckStorage decks, IUserStorage users)
         {
-            db = context;
+            _cardCollection = cards;
+            _userCollection = users;
+            _deckCollection = decks;
         }
  
         // GET api/users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await db.GetUsersAsync();
+            return await _userCollection.GetUsersAsync();
         }
  
         // GET api/users/5
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUser(Guid userId)
         {
-            if (!db.ContainsUser(userId))
-                return NotFound();
-            var user = await db.GetUserAsync(userId);
+            var user = await _userCollection.GetUserAsync(userId);
             return new ObjectResult(user);
         }
  
@@ -43,7 +48,7 @@ namespace Flashcards.Controllers
                 return BadRequest();
             }
  
-            await db.AddUserAsync(user);
+            await _userCollection.AddUserAsync(user);
             return Ok(user);
         }
  
@@ -55,10 +60,8 @@ namespace Flashcards.Controllers
             {
                 return BadRequest();
             }
-            if (!db.ContainsUser(userId))
-                return NotFound();
 
-            await db.UpdateUserAsync(userId, user);
+            await _userCollection.UpdateUserAsync(userId, user);
             return Ok(user);
         }
  
@@ -66,9 +69,7 @@ namespace Flashcards.Controllers
         [HttpDelete("{userId}")]
         public async Task<ActionResult> DeleteUser(Guid userId)
         {
-            if (!db.ContainsUser(userId))
-                return NotFound();
-            await db.DeleteUserAsync(userId);
+            await _userCollection.DeleteUserAsync(userId);
             return Ok();
         }
         
@@ -76,18 +77,14 @@ namespace Flashcards.Controllers
         [HttpGet("{userId}/decks")]
         public async Task<ActionResult<IEnumerable<Deck>>> GetDecks(Guid userId)
         {
-            if (!db.ContainsUser(userId))
-                return NotFound();
-            return await db.GetDecksAsync(userId);
+            return await _deckCollection.GetDecksAsync(userId);
         }
         
         // GET api/users/5/decks/5
         [HttpGet("{userId}/decks/{deckId}")]
         public async Task<ActionResult<IEnumerable<Card>>> GetDeck(Guid userId, Guid deckId)
         {
-            if (!db.ContainsDeck(userId, deckId))
-                return NotFound();
-            var cards = await db.GetDeckAsync(userId, deckId);
+            var cards = await _deckCollection.GetDeckAsync(userId, deckId);
             return new ObjectResult(cards);
         }
         
@@ -99,10 +96,8 @@ namespace Flashcards.Controllers
             {
                 return BadRequest();
             }
-            if (!db.ContainsUser(userId))
-                return NotFound();
-            
-            await db.AddDeckAsync(userId, deck);
+
+            await _deckCollection.AddDeckAsync(userId, deck);
             return Ok(deck);
         }
         
@@ -114,10 +109,8 @@ namespace Flashcards.Controllers
             {
                 return BadRequest();
             }
-            if (!db.ContainsDeck(userId, deckId))
-                return NotFound();
 
-            await db.UpdateDeckAsync(userId, deckId, deck);
+            await _deckCollection.UpdateDeckAsync(userId, deckId, deck);
             return Ok(deck);
         }
         
@@ -125,9 +118,7 @@ namespace Flashcards.Controllers
         [HttpDelete("{userId}/decks/{deckId}")]
         public async Task<ActionResult> DeleteDeck(Guid userId, Guid deckId)
         {
-            if (!db.ContainsDeck(userId, deckId))
-                return NotFound();
-            await db.DeleteDeckAsync(userId, deckId);
+            await _deckCollection.DeleteDeckAsync(userId, deckId);
             return Ok();
         }
         
@@ -135,18 +126,14 @@ namespace Flashcards.Controllers
         [HttpGet("{userId}/decks/{deckId}/cards")]
         public async Task<ActionResult<IEnumerable<Card>>> GetCards(Guid userId, Guid deckId)
         {
-            if (!db.ContainsDeck(userId, deckId))
-                return NotFound();
-            return await db.GetCardsAsync(userId, deckId);
+            return await _cardCollection.GetCardsAsync(userId, deckId);
         }
         
         // GET api/users/5/decks/5/cards/5
         [HttpGet("{userId}/decks/{deckId}/cards/{cardId}")]
         public async Task<ActionResult<Card>> GetCard(Guid userId, Guid deckId, Guid cardId)
         {
-            if (!db.ContainsCard(userId, deckId, cardId))
-                return NotFound();
-            var card = await db.GetCardAsync(userId, deckId, cardId);
+            var card = await _cardCollection.GetCardAsync(userId, cardId);
             return new ObjectResult(card);
         }
         
@@ -158,10 +145,8 @@ namespace Flashcards.Controllers
             {
                 return BadRequest();
             }
-            if (!db.ContainsDeck(userId, deckId))
-                return NotFound();
-            
-            await db.AddCardAsync(userId, deckId, card);
+
+            await _cardCollection.AddCardAsync(userId, deckId, card);
             return Ok(card);
         }
         
@@ -173,10 +158,8 @@ namespace Flashcards.Controllers
             {
                 return BadRequest();
             }
-            if (!db.ContainsCard(userId, deckId, cardId))
-                return NotFound();
 
-            await db.UpdateCardAsync(userId, deckId, cardId, card);
+            await _cardCollection.UpdateCardAsync(userId, cardId, card);
             return Ok(card);
         }
         
@@ -184,9 +167,7 @@ namespace Flashcards.Controllers
         [HttpDelete("{userId}/decks/{deckId}/cards/{cardId}")]
         public async Task<ActionResult> DeleteCard(Guid userId, Guid deckId, Guid cardId)
         {
-            if (!db.ContainsCard(userId, deckId, cardId))
-                return NotFound();
-            await db.DeleteCardAsync(userId, deckId, cardId);
+            await _cardCollection.DeleteCardAsync(userId, cardId);
             return Ok();
         }
     }
