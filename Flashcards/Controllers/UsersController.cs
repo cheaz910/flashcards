@@ -148,8 +148,10 @@ namespace Flashcards.Controllers
                 return BadRequest();
             }
 
-            await _cardCollection.AddCardAsync(userId, deckId, card);
-            return Ok(card);
+            var result = await _cardCollection.AddCardAsync(userId, deckId, card);
+            if (result == null)
+                return StatusCode(500);
+            return Ok(result);
         }
         
         // PUT api/users/5/decks/5/cards/5
