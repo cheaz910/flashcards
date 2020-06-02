@@ -87,6 +87,9 @@ export class CheckCardsPage extends React.Component {
         if (!this.state.loaded) {
             return <h1>loading...</h1>;
         }
+        if (this.state.set.length === 0) {
+            return <h1>netu kartocheckfgdck</h1>
+        }
         return (
             <div className={styles.checkCards}>
                 <span className={styles.checkCards__title}>Набор - {this.state.setProperties.title}</span>
