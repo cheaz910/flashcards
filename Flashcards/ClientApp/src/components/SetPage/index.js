@@ -18,24 +18,17 @@ export class SetPage extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.match.params.setId) {
-            let fetchDeck = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}/cards`, {'headers':{'Authorization':'no'}})
-                .then(data=>data.json());
-            let fetch2 = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}`, {'headers':{'Authorization':'no'}})
-                .then(data=>data.json());
-            Promise.all([fetchDeck, fetch2]).then(values => {
-                this.setState({
-                    set: this.getSet(values[0]),
-                    loaded: true,
-                    setProperties: values[1]
-                });
-            });
-        }
-        else {
+        let fetchDeck = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}/cards`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json());
+        let fetch2 = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}`, {'headers':{'Authorization':'no'}})
+            .then(data=>data.json());
+        Promise.all([fetchDeck, fetch2]).then(values => {
             this.setState({
-                loaded: true
+                set: this.getSet(values[0]),
+                loaded: true,
+                setProperties: values[1]
             });
-        }
+        });
     }
     
     render() {
@@ -46,9 +39,7 @@ export class SetPage extends React.Component {
             <Fragment>
                 <h1>
                     {
-                        this.props.match.params.setId && this.state.setProperties.title
-                            ? `Набор - ${this.state.setProperties.title}`
-                            : <input type="text" defaultValue="Новый набор"/>
+                        this.state.setProperties.title ? `Набор - ${this.state.setProperties.title}` : 'Новый набор'
                     }
                 </h1>
                 <table>

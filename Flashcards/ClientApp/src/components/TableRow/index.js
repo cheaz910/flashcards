@@ -41,13 +41,16 @@ export class TableRow extends React.Component {
                 <th>{this.state.wordEn}</th>
                 <th>{this.state.wordRu}</th>
                 <th>
-                    <button type="button" onClick={() => this.setState({ isMutable: !this.state.isMutable })}>Изменить</button>
+                    <button type="button" onClick={() => this.setState({ isMutable: null })}>Удалить</button>
                 </th>
             </tr>
         );
     }
 
     render() {
+        if (this.state.isMutable === null) {
+            return null;
+        }
         return (this.state.isMutable) ? this.getMutableRow() : this.getImmutableRow();
     }
 
