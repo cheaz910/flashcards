@@ -54,7 +54,7 @@ namespace Flashcards.Controllers
  
         // PUT api/users/5
         [HttpPut("{userId}")]
-        public async Task<ActionResult<User>> PutUser(Guid userId, User user)
+        public async Task<ActionResult<User>> PutUser(Guid userId, [FromBody] User user)
         {
             if (user == null)
             {
@@ -90,7 +90,7 @@ namespace Flashcards.Controllers
         
         // POST api/users/5/decks
         [HttpPost("{userId}/decks")]
-        public async Task<ActionResult<Deck>> PostDeck(Guid userId, Deck deck)
+        public async Task<ActionResult<Deck>> PostDeck(Guid userId, [FromBody] Deck deck)
         {
             if (deck == null)
             {
@@ -103,7 +103,7 @@ namespace Flashcards.Controllers
         
         // PUT api/users/5/decks/5
         [HttpPut("{userId}/decks/{deckId}")]
-        public async Task<ActionResult<Deck>> PutDeck(Guid userId, Guid deckId, Deck deck)
+        public async Task<ActionResult<Deck>> PutDeck(Guid userId, Guid deckId, [FromBody] Deck deck)
         {
             if (deck == null)
             {
@@ -131,7 +131,7 @@ namespace Flashcards.Controllers
         
         // GET api/users/5/decks/5/cards/5
         [HttpGet("{userId}/decks/{deckId}/cards/{cardId}")]
-        public async Task<ActionResult<Card>> GetCard(Guid userId, Guid deckId, Guid cardId)
+        public async Task<ActionResult<Card>> GetCard(Guid userId, Guid cardId)
         {
             var card = await _cardCollection.GetCardAsync(userId, cardId);
             return new ObjectResult(card);
@@ -139,7 +139,7 @@ namespace Flashcards.Controllers
         
         // POST api/users/5/decks/5/cards
         [HttpPost("{userId}/decks/{deckId}/cards")]
-        public async Task<ActionResult<Card>> PostCard(Guid userId, Guid deckId, Card card)
+        public async Task<ActionResult<Card>> PostCard(Guid userId, Guid deckId, [FromBody] Card card)
         {
             if (card == null)
             {
@@ -152,7 +152,7 @@ namespace Flashcards.Controllers
         
         // PUT api/users/5/decks/5/cards/5
         [HttpPut("{userId}/decks/{deckId}/cards/{cardId}")]
-        public async Task<ActionResult<Card>> PutCard(Guid userId, Guid deckId, Guid cardId, Card card)
+        public async Task<ActionResult<Card>> PutCard(Guid userId, Guid deckId, Guid cardId, [FromBody] Card card)
         {
             if (card == null)
             {
