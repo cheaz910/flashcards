@@ -1,14 +1,12 @@
 import React from "react";
-import {authHeader, handleResponse} from "../../_helpers";
-import config from "../../config";
 
 
 export class TableRow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            wordEn: props.card.wordEn,
-            wordRu: props.card.wordRu,
+            wordEn: props.card.text,
+            wordRu: props.card.translation,
             isMutable: props.card.isMutable
         };
     }
@@ -43,13 +41,16 @@ export class TableRow extends React.Component {
                 <th>{this.state.wordEn}</th>
                 <th>{this.state.wordRu}</th>
                 <th>
-                    <button type="button" onClick={() => this.setState({ isMutable: !this.state.isMutable })}>Изменить</button>
+                    <button type="button" onClick={() => this.setState({ isMutable: null })}>Удалить</button>
                 </th>
             </tr>
         );
     }
 
     render() {
+        if (this.state.isMutable === null) {
+            return null;
+        }
         return (this.state.isMutable) ? this.getMutableRow() : this.getImmutableRow();
     }
 
@@ -61,5 +62,5 @@ export class TableRow extends React.Component {
                 //отправка слова на сервер card
             }
         }
-    }
+    }  
 }
