@@ -28,9 +28,11 @@ namespace Flashcards.Data
             return _cardCollection.Find(card => card.DeckId == deckId).ToListAsync();
         }
 
-        public Task AddCardAsync(Guid userId, Guid deckId, Card card)
+        public async Task<Card> AddCardAsync(Guid userId, Guid deckId, Card card)
         {
-            throw new NotImplementedException();
+            card.DeckId = deckId;
+            await _cardCollection.InsertOneAsync(card);
+            return card;
         }
 
         public Task UpdateCardAsync(Guid userId, Guid cardId, Card card)
@@ -40,7 +42,7 @@ namespace Flashcards.Data
 
         public Task DeleteCardAsync(Guid userId, Guid cardId)
         {
-            throw new NotImplementedException();
+            return _cardCollection.DeleteOneAsync(card => cardId == card.Id);
         }
     }
 }
