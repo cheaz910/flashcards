@@ -97,6 +97,8 @@ namespace Flashcards.Controllers
                 return BadRequest();
             }
 
+            deck.Id = Guid.NewGuid();
+            deck.UserId = userId;
             await _deckCollection.AddDeckAsync(userId, deck);
             return Ok(deck);
         }
