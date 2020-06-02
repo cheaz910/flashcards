@@ -63,7 +63,7 @@ export class TableRow extends React.Component {
         if (cardIdToDelete === 0) {
             cardIdToDelete = this.props.card.id;
         }
-        fetch(`api/users/${cardIdToDelete}`, {
+        fetch(`api/users/cards/${cardIdToDelete}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
