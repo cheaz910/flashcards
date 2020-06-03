@@ -18,29 +18,29 @@ namespace Flashcards.Data
                 new CreateIndexModel<Card>(Builders<Card>.IndexKeys.Hashed(c => c.DeckId)));
         }
         
-        public Task<Card> GetCardAsync(Guid userId, Guid cardId)
+        public Task<Card> GetCardAsync(Guid cardId)
         {
             return _cardCollection.Find(card => cardId == card.Id).FirstOrDefaultAsync();
         }
 
-        public Task<List<Card>> GetCardsAsync(Guid userId, Guid deckId)
+        public Task<List<Card>> GetCardsAsync(Guid deckId)
         {
             return _cardCollection.Find(card => card.DeckId == deckId).ToListAsync();
         }
 
-        public async Task<Card> AddCardAsync(Guid userId, Guid deckId, Card card)
+        public async Task<Card> AddCardAsync(Guid deckId, Card card)
         {
             card.DeckId = deckId;
             await _cardCollection.InsertOneAsync(card);
             return card;
         }
 
-        public Task UpdateCardAsync(Guid userId, Guid cardId, Card card)
+        public Task UpdateCardAsync(Guid cardId, Card card)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteCardAsync(Guid userId, Guid cardId)
+        public Task DeleteCardAsync(Guid cardId)
         {
             return _cardCollection.DeleteOneAsync(card => cardId == card.Id);
         }
