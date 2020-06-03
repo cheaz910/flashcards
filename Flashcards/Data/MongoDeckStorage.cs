@@ -24,25 +24,26 @@ namespace Flashcards.Data
             return _deckCollection.Find(deck => deck.UserId == userId).ToListAsync();
         }
 
-        public Task<Deck> GetDeckAsync(Guid userId, Guid deckId)
+        public Task<Deck> GetDeckAsync(Guid deckId)
         {
             return _deckCollection.Find(deck => deck.Id == deckId).FirstOrDefaultAsync();
         }
 
-        public async Task<Deck> AddDeckAsync(Guid userId, Deck deck)
+        public async Task<Deck> AddDeckAsync(Deck deck)
         {
             await _deckCollection.InsertOneAsync(deck);
             return deck;
         }
 
-        public Task UpdateDeckAsync(Guid userId, Guid deckId, Deck deck)
+        public async Task<Deck> UpdateDeckAsync(Guid deckId, Deck deck)
         {
-            throw new NotImplementedException();
+            await _deckCollection.ReplaceOneAsync(d => d.Id == deckId, deck);
+            return deck;
         }
 
-        public Task DeleteDeckAsync(Guid userId, Guid deckId)
+        public async Task DeleteDeckAsync(Guid deckId)
         {
-            throw new NotImplementedException();
+            await _deckCollection.DeleteOneAsync(deck => deck.Id == deckId);
         }
     }
 }
