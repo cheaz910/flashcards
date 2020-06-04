@@ -12,6 +12,7 @@ namespace Flashcards.Data
         Task<Card> AddCardAsync(Guid deckId, Card card);
         Task UpdateCardAsync(Guid cardId, Card card);
         Task DeleteCardAsync(Guid cardId);
+        Task DeleteAllCardsFromDeck(Guid deckId);
     }
     
     

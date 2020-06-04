@@ -44,6 +44,7 @@ namespace Flashcards.Controllers
         [HttpDelete("{deckId}")]
         public async Task<ActionResult> DeleteDeck(Guid deckId)
         {
+            await _cardCollection.DeleteAllCardsFromDeck(deckId).ConfigureAwait(false);
             await _deckCollection.DeleteDeckAsync(deckId).ConfigureAwait(false);
             return Ok();
         }
