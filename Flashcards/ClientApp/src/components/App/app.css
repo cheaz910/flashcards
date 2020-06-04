@@ -34,4 +34,6 @@ main {
     flex-direction: column;
     padding-top: 50px;
     position: relative;
+    justify-content: center;
+    align-items: center;
 }
