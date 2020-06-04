@@ -47,7 +47,7 @@ export class CardItem extends React.Component {
 
     delete() {
         if (!this.state.isNew) {
-            fetch(`api/users/cards/${this.state.id}`, {
+            fetch(`api/cards/${this.state.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',

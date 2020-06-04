@@ -41,9 +41,8 @@ export default class CreateSetPage extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: body
-        }).then(data => console.log(data));
+        }).then(data => this.props.history.push('/'));
         event.preventDefault();
-        this.props.history.push('/');
     }
 
     handleInputChange(event) {
@@ -58,44 +57,17 @@ export default class CreateSetPage extends React.Component {
 
     render() {
         return (
-            <Formik
-                initialValues={{
-                    title: '',
-                    description: ''
-                }}
-                validationSchema={Yup.object().shape({
-                    title: Yup.string().required('Title is required'),
-                    description: Yup.string().required('Description is required')
-                })}
-                onSubmit={({ title, description }, { setStatus, setSubmitting }) => {
-                    setStatus();
-                    let body = JSON.stringify({
-                        'Title': this.state.title,
-                        'Description': this.state.description
-                    });
-                    fetch(`api/decks`, {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: body
-                    }).then(data => {console.log(data);this.props.history.push('/');});
-                }}
-                render={({ errors, status, touched, isSubmitting }) => (
-                    <form onSubmit={this.handleSubmit}>
-                        <label>
-                            Название набора:
-                            <input type="text" name="title" onChange={this.handleInputChange} />
-                        </label>
-                        <label>
-                            Описание набора:
-                            <input type="text" name="description" onChange={this.handleInputChange} />
-                        </label>
-                        <input type="submit" value="Отправить" />
-                    </form>
-                )}
-            />
+            <form className={styles.createDeckForm} onSubmit={this.handleSubmit}>
+                <label>
+                    Название набора:
+                    <input type="text" name="title" onChange={this.handleInputChange} placeholder={"Новая колода"} />
+                </label>
+                <label>
+                    Описание набора:
+                    <input type="text" name="description" onChange={this.handleInputChange} placeholder={"Новое описание"} />
+                </label>
+                <input className={styles.createDeckForm__button} type="submit" value="Создать" />
+            </form>
         );
     }
 }

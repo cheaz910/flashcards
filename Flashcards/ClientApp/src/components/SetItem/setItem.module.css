@@ -1,5 +1,4 @@
 .set {
-    font-family: 'Alegreya Sans SC', sans-serif;
     background-color: white;
     width: 200px;
     height: 270px;
@@ -34,7 +33,6 @@
     background-color: #FFF;
     height: 33px;
     font-size: 24px;
-    font-family: 'Alegreya Sans SC', sans-serif;
     cursor: pointer;
 }
 .set__deleteButton {
@@ -49,7 +47,6 @@
     background-color: #FFF;
     height: 33px;
     font-size: 24px;
-    font-family: 'Alegreya Sans SC', sans-serif;
     cursor: pointer;
 }
 
@@ -75,10 +72,10 @@
     text-overflow: ellipsis;
     text-align: center;
     overflow: hidden;
+    word-wrap: break-word;
 }
 
 .modalWindow {
-    font-family: 'Alegreya Sans SC', sans-serif;
     font-size: 25px;
     display: flex;
     flex-direction: column;
