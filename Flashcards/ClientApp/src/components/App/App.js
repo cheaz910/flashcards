@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 
 import { history } from '../../_helpers';
 import { authenticationService } from '../../_services';
@@ -46,11 +46,14 @@ export default class App extends React.Component {
                 </header>
                 }
                 <main>
-                    <PrivateRoute exact path="/" component={HomePage} />
-                    <PrivateRoute exact path="/checkCards/:setId" component={CheckCardsPage} />
-                    <PrivateRoute exact path="/sets/:setId" component={SetPage} />
-                    <PrivateRoute exact path="/sets" component={CreateSetPage} />
-                    <Route path="/login" component={LoginPage} />
+                    <Switch>
+                        <PrivateRoute exact path="/" component={HomePage} />
+                        <PrivateRoute exact path="/checkCards/:setId" component={CheckCardsPage} />
+                        <PrivateRoute exact path="/sets/:setId" component={SetPage} />
+                        <PrivateRoute exact path="/sets" component={CreateSetPage} />
+                        <Route path="/login" component={LoginPage} />
+                        <Route path="*" component={() => <h1>404</h1>} />
+                    </Switch>
                 </main>
             </Router>
         );
