@@ -19,6 +19,7 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
+        console.log('did mount');
         fetch(`api/decks`)
             .then(data => {console.log(data.body); return data.json()})
             .then(data => {
