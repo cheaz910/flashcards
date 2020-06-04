@@ -1,8 +1,8 @@
 import React from 'react';
 import {Fragment} from 'react';
-import { userService, authenticationService } from '../../_services';
-import {TableRow} from '../TableRow';
-import styles from './setPage.module.css';
+import {authenticationService } from '../../_services';
+import {Cards} from '../Cards';
+import styles from "./setPage.module.css";
 
 
 export class SetPage extends React.Component {
@@ -37,42 +37,30 @@ export class SetPage extends React.Component {
         }
         return (
             <Fragment>
-                <h1>
-                    {
-                        this.state.setProperties.title ? `Набор - ${this.state.setProperties.title}` : 'Новый набор'
-                    }
-                </h1>
-                <table>
-                    <tbody>
-                    {
-                        this.state.set.map(card => <TableRow card={card} setId={this.props.match.params.setId} />)
-                    }
-                    </tbody>
-                </table>
-                <button type="button" onClick={() => this.addRow()}>+</button>
+                <span className={styles.set__title}>
+                    {this.state.setProperties.title}
+                </span>
+                <span className={styles.set__description}> 
+                    {this.state.setProperties.description}
+                </span>
+                <button className={styles.change__button} type="button"/>
+                <Cards cards={this.state.set}
+                       currentToken={this.state.currentToken}
+                       setId={this.props.match.params.setId}
+                />
             </Fragment>
         );
-    }
-
-    addRow() {
-        let card = {
-            id:null,
-            isMutable: true,
-            text:"",
-            translation:""
-        };
-        let newState = this.state;
-        newState.set.push(card);
-        this.setState(newState);
     }
 
     getSet(set=null) {
         let cards = [];
         for (let i = 0; i < set.length; i++) {
             let item = set[i];
-            item['isMutable'] = false;
+            item['isNew'] = false;
             cards.push(item);
         }
         return cards;
     }
+
+
 }

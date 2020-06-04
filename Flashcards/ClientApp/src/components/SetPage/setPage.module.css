@@ -1,4 +1,19 @@
-.columns {
-    display: inline-block;
+.set__title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: 'Alegreya Sans SC', sans-serif;
 }
 
+.set__description {
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Alegreya Sans SC', sans-serif;
+}
+
+.change__button {
+    
+}
