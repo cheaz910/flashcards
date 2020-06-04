@@ -34,7 +34,7 @@ export default class CreateSetPage extends React.Component {
             event.preventDefault();
             return;
         }
-        fetch(`api/users/${this.state.currentToken}/decks`, {
+        fetch(`api/decks`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -73,7 +73,7 @@ export default class CreateSetPage extends React.Component {
                         'Title': this.state.title,
                         'Description': this.state.description
                     });
-                    fetch(`api/users/${this.state.currentToken}/decks`, {
+                    fetch(`api/decks`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',

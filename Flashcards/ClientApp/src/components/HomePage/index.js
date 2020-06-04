@@ -28,18 +28,18 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        const requestOptions = { method: 'POST', headers: {...authHeader(), 'Content-Type': 'application/json'}, body: JSON.stringify({
-                userId: this.state.currentUser.id
-            })};
         localStorage.setItem('token', this.state.currentToken);
-        fetch(`api/users/${this.state.currentToken}/decks`, {'headers':{'Authorization':'no'}})
-            .then(data=>data.json())
-            .then(data => this.setState({ sets: data }));
+        fetch(`api/decks`)
+            .then(data => {console.log(data.body); return data.json()})
+            .then(data => {
+                this.setState({ sets: data })
+            });
         //fetch(`${config.apiUrl}/api/sets`, requestOptions).then(handleResponse).then(data => this.setState({ sets: data.sets.sets }));
     }
 
     render() {
         const { sets } = this.state;
+        console.log(sets);
         return (
             <>
                 <span>currentToken - {this.state.currentToken}</span>

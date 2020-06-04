@@ -27,9 +27,9 @@ export class CheckCardsPage extends React.Component {
     }
 
     componentDidMount() {
-        let fetchDeck = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}/cards`, {'headers':{'Authorization':'no'}})
+        let fetchDeck = fetch(`api/decks/${this.props.match.params.setId}/cards`)
             .then(data=>data.json());
-        let fetch2 = fetch(`api/users/${this.state.currentToken}/decks/${this.props.match.params.setId}`, {'headers':{'Authorization':'no'}})
+        let fetch2 = fetch(`api/decks/${this.props.match.params.setId}`)
             .then(data=>data.json());
         Promise.all([fetchDeck, fetch2]).then(values => {
             this.setState({

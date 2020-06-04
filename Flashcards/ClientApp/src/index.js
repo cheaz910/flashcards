@@ -8,7 +8,7 @@ import { configureFakeBackend } from './_helpers';
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
-configureFakeBackend();
+//configureFakeBackend();
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl}>

@@ -27,8 +27,7 @@ namespace Flashcards.Controllers
             // var decks = await _deckCollection.GetDecksAsync();
             // if (decks == null)
             //     return NotFound();
-
-            return Ok(_deckCollection.GetAllDecksAsync());
+            return Ok(await _deckCollection.GetAllDecksAsync());
         }
         
         [HttpGet("{deckId}")]
