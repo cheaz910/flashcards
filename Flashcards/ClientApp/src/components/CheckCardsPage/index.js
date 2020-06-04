@@ -22,7 +22,7 @@ export class CheckCardsPage extends React.Component {
             goodTries: 0,
             loaded: false,
             newCard: false,
-            isFirstCard: false
+            isFirstCard: true
         };
     }
 
@@ -82,7 +82,7 @@ export class CheckCardsPage extends React.Component {
     }
 
     render() {
-        console.log(this.state);
+        console.log(this.state.set, this.state.firstNextCard, this.state.secondNextCard);
         const buttons = this.state.flipCard ? (this.state.knewCard ? this.approveButtons() : this.nextButtons()) : this.doKnowButtons();
         if (!this.state.loaded) {
             return <h1>loading...</h1>;
@@ -110,12 +110,12 @@ export class CheckCardsPage extends React.Component {
                     <div className={mergeClassNames(styles.card, !this.state.isFirstCard ? styles.card_show : '', !this.state.newCard ? styles.card_throw : '')}>
                         <div className={mergeClassNames(styles.card__front, this.state.flipCard ? styles.card__front_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.secondNextCard > this.state.set.length ? this.state.secondNextCard : this.state.set.length - 1].text}
+                                {this.state.set[this.state.secondNextCard >= this.state.set.length ? this.state.set.length - 1 : this.state.secondNextCard].text}
                             </div>
                         </div>
                         <div className={mergeClassNames(styles.card__back, this.state.flipCard ? styles.card__back_flip : '')}>
                             <div className={styles.card__word}>
-                                {this.state.set[this.state.secondNextCard > this.state.set.length ? this.state.secondNextCard : this.state.set.length - 1].translation}
+                                {this.state.set[this.state.secondNextCard >= this.state.set.length ? this.state.set.length - 1 : this.state.secondNextCard].translation}
                             </div>
                         </div>
                     </div>
