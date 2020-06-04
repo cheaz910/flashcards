@@ -16,6 +16,7 @@
     overflow: hidden;
     border: 1px solid #396CF0;
     transition: .2s;
+    position: relative;
 }
 
 .set:hover {
@@ -56,4 +57,15 @@
     text-overflow: ellipsis;
     text-align: center;
     overflow: hidden;
+}
+
+
+.deleteDeck {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    border: 1px solid #396CF0;
+    right: 0;
+    top: 0;
+    transition: .2s;
 }
