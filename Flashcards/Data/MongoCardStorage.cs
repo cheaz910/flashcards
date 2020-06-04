@@ -44,5 +44,10 @@ namespace Flashcards.Data
         {
             return _cardCollection.DeleteOneAsync(card => cardId == card.Id);
         }
+
+        public async Task DeleteAllCardsFromDeck(Guid deckId)
+        {
+            await _cardCollection.DeleteManyAsync(card => card.DeckId == deckId);
+        }
     }
 }
