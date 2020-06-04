@@ -65,7 +65,7 @@ export class CardItem extends React.Component {
                 'Text': this.state.text,
                 'Translation': this.state.translation
             });
-            fetch(`api/users/${this.props.currentToken}/decks/${this.props.setId}/cards`, {
+            fetch(`api/decks/${this.props.setId}/cards`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
