@@ -15,13 +15,7 @@ class HomePage extends React.Component {
             sets: []
         };
 
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        fetch(`api/users/${event.target.value}/decks`)
-            .then(data=>data.json())
-            .then(data => this.setState({ sets: data }));
+        this.deleteDeck = this.deleteDeck.bind(this);
     }
 
     componentDidMount() {
@@ -32,9 +26,16 @@ class HomePage extends React.Component {
             });
     }
 
+    deleteDeck(id) {
+        console.log(this.state);
+        this.setState({
+            sets: this.state.sets.filter(set => set.id !== id)
+        });
+    }
+
     render() {
         const { sets } = this.state;
-        return (<Sets sets={sets} />);
+        return (<Sets sets={sets} deleteDeck={this.deleteDeck}/>);
     }
 }
 
