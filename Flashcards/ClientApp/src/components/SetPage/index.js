@@ -2,6 +2,7 @@ import React from 'react';
 import {Fragment} from 'react';
 import {authenticationService } from '../../_services';
 import {Cards} from '../Cards';
+import {SetDescription} from '../SetDescription';
 import styles from "./setPage.module.css";
 
 
@@ -36,19 +37,16 @@ export class SetPage extends React.Component {
             return <h1>loading...</h1>;
         }
         return (
-            <Fragment>
-                <span className={styles.set__title}>
-                    {this.state.setProperties.title}
-                </span>
-                <span className={styles.set__description}> 
-                    {this.state.setProperties.description}
-                </span>
-                <button className={styles.change__button} type="button"/>
+            <div className={styles.set__page}>
+                <SetDescription setProperties={this.state.setProperties}
+                       currentToken={this.state.currentToken}
+                       setId={this.props.match.params.setId}
+                />
                 <Cards cards={this.state.set}
                        currentToken={this.state.currentToken}
                        setId={this.props.match.params.setId}
                 />
-            </Fragment>
+            </div>
         );
     }
 

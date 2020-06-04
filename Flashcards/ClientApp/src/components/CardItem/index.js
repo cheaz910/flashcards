@@ -19,9 +19,6 @@ export class CardItem extends React.Component {
     }
     
     render() {
-        //if (this.state.isNew === null) {
-        //    return null;
-        //}
         if (this.state.isNew) {
             return (
                 <div className={styles.card}>
@@ -64,25 +61,25 @@ export class CardItem extends React.Component {
     save() {
         if (this.state.text !== "" && this.state.translation !== "") {
             this.setState({isNew: false});
-        }
-        let body = JSON.stringify({
-            'Text': this.state.text,
-            'Translation': this.state.translation
-        });
-        fetch(`api/users/${this.props.currentToken}/decks/${this.props.setId}/cards`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: body
-        }).then(data => data.json())
-            .then(data => this.setState({id: data.id}))
-            .then(() => {
-                this.props.card.id = this.state.id;
-                this.props.card.text = this.state.text;
-                this.props.card.translation = this.state.translation;
-                this.props.card.isNew = this.state.isNew;
+            let body = JSON.stringify({
+                'Text': this.state.text,
+                'Translation': this.state.translation
             });
+            fetch(`api/users/${this.props.currentToken}/decks/${this.props.setId}/cards`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            }).then(data => data.json())
+                .then(data => this.setState({id: data.id}))
+                .then(() => {
+                    this.props.card.id = this.state.id;
+                    this.props.card.text = this.state.text;
+                    this.props.card.translation = this.state.translation;
+                    this.props.card.isNew = this.state.isNew;
+                });
+        }
     }
 }
