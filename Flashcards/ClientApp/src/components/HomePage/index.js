@@ -5,6 +5,7 @@ import { userService, authenticationService } from '../../_services';
 import config from "../../config";
 import {authHeader, handleResponse} from "../../_helpers";
 import { Sets } from '../Sets';
+import { Loader } from '../Loader';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class HomePage extends React.Component {
 
         this.state = {
             currentUser: authenticationService.currentUserValue,
+            isLoaded: false,
             sets: []
         };
 
@@ -23,7 +25,7 @@ class HomePage extends React.Component {
         fetch(`api/decks`)
             .then(data => {console.log(data.body); return data.json()})
             .then(data => {
-                this.setState({ sets: data })
+                this.setState({ sets: data, isLoaded: true })
             });
     }
 
@@ -36,6 +38,9 @@ class HomePage extends React.Component {
 
     render() {
         const { sets } = this.state;
+        if (!this.state.isLoaded) {
+            return <Loader />
+        }
         return (<Sets sets={sets} deleteDeck={this.deleteDeck}/>);
     }
 }

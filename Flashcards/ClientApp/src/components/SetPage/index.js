@@ -4,6 +4,7 @@ import {authenticationService } from '../../_services';
 import {Cards} from '../Cards';
 import {SetDescription} from '../SetDescription';
 import styles from "./setPage.module.css";
+import {Loader} from "../Loader";
 
 
 export class SetPage extends React.Component {
@@ -34,7 +35,7 @@ export class SetPage extends React.Component {
 
     render() {
         if (!this.state.loaded) {
-            return <h1>loading...</h1>;
+            return <Loader />;
         }
         return (
             <div className={styles.set__page}>

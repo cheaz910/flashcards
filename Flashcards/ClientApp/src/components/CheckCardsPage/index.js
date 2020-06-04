@@ -5,6 +5,7 @@ import { userService, authenticationService } from '../../_services';
 import config from "../../config";
 import {authHeader, handleResponse, mergeClassNames} from "../../_helpers";
 import styles from './checkCardsPage.module.css';
+import { Loader } from '../Loader';
 
 export class CheckCardsPage extends React.Component {
     constructor(props) {
@@ -85,7 +86,7 @@ export class CheckCardsPage extends React.Component {
         console.log(this.state.set, this.state.firstNextCard, this.state.secondNextCard);
         const buttons = this.state.flipCard ? (this.state.knewCard ? this.approveButtons() : this.nextButtons()) : this.doKnowButtons();
         if (!this.state.loaded) {
-            return <h1>loading...</h1>;
+            return <Loader />;
         }
         if (this.state.set.length === 0) {
             return <h1>netu kartocheckfgdck</h1>
