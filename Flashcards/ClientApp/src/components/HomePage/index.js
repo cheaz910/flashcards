@@ -32,9 +32,7 @@ class HomePage extends React.Component {
         fetch(`api/decks`)
             .then(data => {console.log(data.body); return data.json()})
             .then(data => {
-                let trueData = [];
-                console.log(data);
-                this.setState({ sets: trueData })
+                this.setState({ sets: data })
             });
         //fetch(`${config.apiUrl}/api/sets`, requestOptions).then(handleResponse).then(data => this.setState({ sets: data.sets.sets }));
     }
