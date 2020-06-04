@@ -16,7 +16,6 @@ export class SetDescription extends React.Component {
         if (this.state.isChange) {
             return (
                 <div className={styles.properties}>
-                    
                     <input className={styles.title} defaultValue={this.state.title}
                            onChange={
                                (event) => this.setState({title: event.target.value})
@@ -45,7 +44,20 @@ export class SetDescription extends React.Component {
     save() {
         if (this.state.title !== "") {
             this.setState({isChange: false});
-            //отправка на сервер
+            let body = JSON.stringify({
+                'Title': this.state.title,
+                'Description': this.state.description
+            });
+            fetch(`api/decks/${this.props.setId}`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
+            //PUT decks/deckId: редактирование данных колоды(описание или название)
+
         }
     }
 }
