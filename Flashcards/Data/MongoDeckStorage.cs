@@ -19,6 +19,12 @@ namespace Flashcards.Data
                 new CreateIndexModel<Deck>(Builders<Deck>.IndexKeys.Hashed(deck => deck.UserId)));
         }
         
+        
+        public async Task<List<Deck>> GetAllDecksAsync()
+        {
+            return await _deckCollection.Find(_ => true).ToListAsync();
+        }
+        
         public Task<List<Deck>> GetDecksAsync(Guid userId)
         {
             return _deckCollection.Find(deck => deck.UserId == userId).ToListAsync();

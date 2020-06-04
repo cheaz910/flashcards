@@ -8,6 +8,7 @@ namespace Flashcards.Data
     public interface IDeckStorage
     {
         Task<List<Deck>> GetDecksAsync(Guid userId);
+        Task<List<Deck>> GetAllDecksAsync();
         Task<Deck> GetDeckAsync(Guid deckId);
         Task<Deck> AddDeckAsync(Deck deck);
         Task<Deck> UpdateDeckAsync(Guid deckId, Deck deck);
