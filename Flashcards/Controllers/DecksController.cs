@@ -33,7 +33,7 @@ namespace Flashcards.Controllers
         [HttpGet("{deckId}")]
         public async Task<ActionResult<IEnumerable<Card>>> GetDeck(Guid userId, Guid deckId)
         {
-            var cards = await _deckCollection.GetDeckAsync(deckId);
+            var cards = await _deckCollection.GetDeckAsync(deckId).ConfigureAwait(false);
 
             if (cards == null)
                 return NotFound();
@@ -44,14 +44,14 @@ namespace Flashcards.Controllers
         [HttpDelete("{deckId}")]
         public async Task<ActionResult> DeleteDeck(Guid deckId)
         {
-            await _deckCollection.DeleteDeckAsync(deckId);
+            await _deckCollection.DeleteDeckAsync(deckId).ConfigureAwait(false);
             return Ok();
         }
         
         [HttpGet("{deckId}/cards")]
         public async Task<ActionResult<IEnumerable<Card>>> GetCardsFromDeck(Guid deckId)
         {
-            return await _cardCollection.GetCardsAsync(deckId);
+            return await _cardCollection.GetCardsAsync(deckId).ConfigureAwait(false);
         }
         
         [HttpPost]
@@ -63,7 +63,7 @@ namespace Flashcards.Controllers
             }
 
             deck.Id = Guid.NewGuid();
-            await _deckCollection.AddDeckAsync(deck);
+            await _deckCollection.AddDeckAsync(deck).ConfigureAwait(false);
             return Ok(deck);
         }
 
@@ -76,7 +76,7 @@ namespace Flashcards.Controllers
             }
 
             deck.Id = deckId;
-            var newDeck = await _deckCollection.UpdateDeckAsync(deckId, deck);
+            var newDeck = await _deckCollection.UpdateDeckAsync(deckId, deck).ConfigureAwait(false);
             return Ok(newDeck);
         }
         
@@ -88,7 +88,7 @@ namespace Flashcards.Controllers
                 return BadRequest();
             }
 
-            var result = await _cardCollection.AddCardAsync(deckId, card);
+            var result = await _cardCollection.AddCardAsync(deckId, card).ConfigureAwait(false);
             if (result == null)
                 return StatusCode(500);
             return Ok(result);

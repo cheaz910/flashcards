@@ -20,14 +20,14 @@ namespace Flashcards.Controllers
         [HttpGet("{cardId}")]
         public async Task<ActionResult<Card>> GetCard(Guid cardId)
         {
-            var card = await _cardCollection.GetCardAsync(cardId);
+            var card = await _cardCollection.GetCardAsync(cardId).ConfigureAwait(false);
             return new ObjectResult(card);
         }
         
         [HttpDelete("{cardId}")]
         public async Task<ActionResult> DeleteCard(Guid cardId)
         {
-            await _cardCollection.DeleteCardAsync(cardId);
+            await _cardCollection.DeleteCardAsync(cardId).ConfigureAwait(false);
             return Ok();
         }
     }
