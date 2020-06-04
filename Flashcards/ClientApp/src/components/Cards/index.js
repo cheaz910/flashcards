@@ -23,7 +23,6 @@ export class Cards extends React.Component {
             <div className={styles.cards}>
                 {this.state.cards &&
                 <ul className={styles.cards__list}>
-                    
                     {this.state.cards.map(card =>
                         <li className={styles.cards__card}>
                             <CardItem key={card.text}

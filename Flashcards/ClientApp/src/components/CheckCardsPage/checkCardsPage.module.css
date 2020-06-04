@@ -71,7 +71,6 @@
     position: relative;
     min-width: 460px;
     min-height: 550px;
-    font-family: 'Alegreya Sans SC', sans-serif;
     display: flex;
     flex-direction: column;
 }
@@ -103,7 +102,6 @@
     font-size: 17px;
     width: 90px;
     height: 30px;
-    font-family: 'Alegreya Sans SC', sans-serif;
     color: white;
     margin: 0 10px;
 }
