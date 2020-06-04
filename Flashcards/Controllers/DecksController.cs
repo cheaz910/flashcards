@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Flashcards.Data;
 using Flashcards.Models;
@@ -64,7 +65,7 @@ namespace Flashcards.Controllers
 
             deck.Id = Guid.NewGuid();
             await _deckCollection.AddDeckAsync(deck);
-            return Ok(deck);
+            return Created($"{Request.Path.Value}/{deck.Id}", deck);
         }
 
         [HttpPut("{deckId}")]
@@ -91,7 +92,7 @@ namespace Flashcards.Controllers
             var result = await _cardCollection.AddCardAsync(deckId, card);
             if (result == null)
                 return StatusCode(500);
-            return Ok(result);
+            return Created($"{Request.Path.Value}/{card.Id}", card);
         }
     }
 }
