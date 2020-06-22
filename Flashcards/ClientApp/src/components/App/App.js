@@ -33,7 +33,6 @@ export default class App extends React.Component {
         const { currentUser } = this.state;
         return (
             <Router history={history}>
-                {currentUser &&
                 <header>
                     <nav className="nav-header">
                         <div className="nav-header__links">
@@ -44,7 +43,6 @@ export default class App extends React.Component {
                         </div>
                     </nav>
                 </header>
-                }
                 <main>
                     <Switch>
                         <PrivateRoute exact path="/" component={HomePage} />
