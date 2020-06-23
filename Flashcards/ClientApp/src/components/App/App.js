@@ -36,7 +36,7 @@ export default class App extends React.Component {
                 <header>
                     <nav className="nav-header">
                         <div className="nav-header__links">
-                            <Link to="/" className="links__link">Главная</Link>
+                            <Link to="/" className="links__link">На главную</Link>
                         </div>
                     </nav>
                 </header>
