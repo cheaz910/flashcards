@@ -1,9 +1,6 @@
 import React from 'react';
 import {Fragment} from 'react';
 
-import { userService, authenticationService } from '../../_services';
-import config from "../../config";
-import {authHeader, handleResponse} from "../../_helpers";
 import { Sets } from '../Sets';
 import { Loader } from '../Loader';
 
@@ -12,7 +9,6 @@ class HomePage extends React.Component {
         super(props);
 
         this.state = {
-            currentUser: authenticationService.currentUserValue,
             isLoaded: false,
             sets: []
         };

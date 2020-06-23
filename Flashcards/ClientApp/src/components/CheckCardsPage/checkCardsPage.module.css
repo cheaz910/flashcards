@@ -45,9 +45,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .card__word {
+    width: 100%;
+    word-break: break-all;
+    text-align: center;
     font-size: 27px;
 }
 

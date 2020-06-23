@@ -15,6 +15,8 @@ export class CheckCardsPage extends React.Component {
             currentUser: authenticationService.currentUserValue,
             currentToken: localStorage.getItem('token'),
             set: [],
+            mainQueue: [],
+            secondQueue: [],
             setProperties: {},
             firstNextCard: 0,
             secondNextCard: 1,
@@ -23,7 +25,8 @@ export class CheckCardsPage extends React.Component {
             goodTries: 0,
             loaded: false,
             newCard: false,
-            isFirstCard: true
+            isFirstCard: true,
+            mainQueueCounter: 0
         };
     }
 
@@ -33,10 +36,14 @@ export class CheckCardsPage extends React.Component {
         let fetch2 = fetch(`api/decks/${this.props.match.params.setId}`)
             .then(data=>data.json());
         Promise.all([fetchDeck, fetch2]).then(values => {
+            let mainQueue = Array.from(Array(values[0].length).keys());
+            let firstNextCard = mainQueue.shift();
             this.setState({
                 set: values[0],
                 loaded: true,
-                setProperties: values[1]
+                setProperties: values[1],
+                mainQueue: mainQueue,
+                firstNextCard: firstNextCard
             });
         });
     }
@@ -64,13 +71,22 @@ export class CheckCardsPage extends React.Component {
     }
 
     nextCard(isGuessed) {
+        let mainQueue = this.state.mainQueue.slice();
+        if (!isGuessed) {
+            mainQueue.splice(Math.floor(mainQueue.length / 2), 0, this.state.isFirstCard ? this.state.firstNextCard : this.state.secondNextCard);
+        } else {
+            mainQueue.push(this.state.isFirstCard ? this.state.firstNextCard : this.state.secondNextCard);
+        }
         let newFirstNextCard = this.state.firstNextCard;
         let newSecondNextCard = this.state.secondNextCard;
+        console.log(newFirstNextCard, newSecondNextCard);
         if (this.state.isFirstCard) {
-            newSecondNextCard = (this.state.secondNextCard + 2) % this.state.set.length;
+            newSecondNextCard = mainQueue.shift();
         } else {
-            newFirstNextCard = (this.state.firstNextCard + 2) % this.state.set.length;
+            newFirstNextCard = mainQueue.shift();
         }
+
+
         this.setState({
             goodTries: this.state.goodTries + (isGuessed ? 1 : 0),
             firstNextCard: newFirstNextCard,
@@ -78,18 +94,19 @@ export class CheckCardsPage extends React.Component {
             flipCard: false,
             knewCard: false,
             newCard: !this.state.newCard,
-            isFirstCard: !this.state.isFirstCard
+            isFirstCard: !this.state.isFirstCard,
+            mainQueue: mainQueue
         });
     }
 
     render() {
-        console.log(this.state.set, this.state.firstNextCard, this.state.secondNextCard);
+        console.log(this.state.set, this.state.firstNextCard, this.state.secondNextCard, this.state.mainQueue, this.state.secondQueue);
         const buttons = this.state.flipCard ? (this.state.knewCard ? this.approveButtons() : this.nextButtons()) : this.doKnowButtons();
         if (!this.state.loaded) {
             return <Loader />;
         }
         if (this.state.set.length === 0) {
-            return <h1>netu kartocheckfgdck</h1>
+            return <h1>В колоде нет карточек</h1>
         }
         return (
             <div className={styles.checkCards}>
@@ -98,26 +115,26 @@ export class CheckCardsPage extends React.Component {
                 <div className={styles.cardWrapper}>
                     <div className={mergeClassNames(styles.card, this.state.isFirstCard ? styles.card_show : '', this.state.newCard ? styles.card_throw : '')}>
                         <div className={mergeClassNames(styles.card__front, this.state.flipCard ? styles.card__front_flip : '')}>
-                            <div className={styles.card__word}>
+                            <p className={styles.card__word}>
                                 {this.state.set[this.state.firstNextCard].text}
-                            </div>
+                            </p>
                         </div>
                         <div className={mergeClassNames(styles.card__back, this.state.flipCard ? styles.card__back_flip : '')}>
-                            <div className={styles.card__word}>
+                            <p className={styles.card__word}>
                                 {this.state.set[this.state.firstNextCard].translation}
-                            </div>
+                            </p>
                         </div>
                     </div>
                     <div className={mergeClassNames(styles.card, !this.state.isFirstCard ? styles.card_show : '', !this.state.newCard ? styles.card_throw : '')}>
                         <div className={mergeClassNames(styles.card__front, this.state.flipCard ? styles.card__front_flip : '')}>
-                            <div className={styles.card__word}>
+                            <p className={styles.card__word}>
                                 {this.state.set[this.state.secondNextCard >= this.state.set.length ? this.state.set.length - 1 : this.state.secondNextCard].text}
-                            </div>
+                            </p>
                         </div>
                         <div className={mergeClassNames(styles.card__back, this.state.flipCard ? styles.card__back_flip : '')}>
-                            <div className={styles.card__word}>
+                            <p className={styles.card__word}>
                                 {this.state.set[this.state.secondNextCard >= this.state.set.length ? this.state.set.length - 1 : this.state.secondNextCard].translation}
-                            </div>
+                            </p>
                         </div>
                     </div>
                 </div>

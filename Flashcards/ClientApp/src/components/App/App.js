@@ -36,10 +36,7 @@ export default class App extends React.Component {
                 <header>
                     <nav className="nav-header">
                         <div className="nav-header__links">
-                            <Link to="/" className="links__link">Home</Link>
-                        </div>
-                        <div className="nav-header__profile">
-                            <a href="/#" onClick={this.logout} className="profile__link">Logout</a>
+                            <Link to="/" className="links__link">Главная</Link>
                         </div>
                     </nav>
                 </header>

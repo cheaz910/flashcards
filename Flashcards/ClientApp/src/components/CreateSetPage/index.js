@@ -1,12 +1,5 @@
 import React from 'react';
-import {Fragment} from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 
-import { userService, authenticationService } from '../../_services';
-import config from "../../config";
-import {authHeader, handleResponse} from "../../_helpers";
-import { Sets } from '../Sets';
 import styles from './createSetPage.module.css';
 
 export default class CreateSetPage extends React.Component {
@@ -14,8 +7,6 @@ export default class CreateSetPage extends React.Component {
         super(props);
 
         this.state = {
-            currentUser: authenticationService.currentUserValue,
-            currentToken: localStorage.getItem('token'),
             title: '',
             description: ''
         };
